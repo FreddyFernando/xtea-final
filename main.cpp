@@ -1,30 +1,22 @@
-// ConsoleApplication1.cpp : Defines the entry point for the console application.
-//
-
 #include <iostream>
 #include <fstream>
 #include <stdint.h>
 using namespace std;
 
-//uint32_t key[] = { 0xFDA5D54E,0xFC00B55A}; // encryption key
-//uint32_t key[] = { 0x11223344, 0x55667788, 0x88AABBCC, 0xDDEEFF00 };
-uint32_t key[] = { 0x00000000, 0x0000000, 0x00000000, 0x00000000 };
+uint32_t key[] = { 0x00000000, 0x00000000, 0x00000000, 0x00000000 };
 #define BLOCK_SIZE 8
 uint32_t enc0;
 uint32_t enc1;
 uint32_t dec0;
 uint32_t dec1;
-uint32_t input1 = 0x2a72a594;
-uint32_t input2 = 0x1072425f;
+uint32_t input1 = 0x30303030;
+uint32_t input2 = 0x30303030;
 
 
 
 void xtea_encipher(unsigned int num_rounds, uint32_t const key[4]) {
 	unsigned int i;
-	//uint32_t v0 = v[0], v1 = v[1];
 	uint32_t v0, v1, sum = 0, delta = 0x9E3779B9;
-	//v0 = 0x04030201;
-	//v1 = 0x08070605;
 	v0 = input1;
 	v1 = input2;
 
@@ -67,27 +59,17 @@ void xtea_decipher(unsigned int num_rounds, uint32_t enc0, uint32_t enc1, uint32
 
 int main()
 {
-
-	//FileCrypt("file.txt", true); // encrypt
-	//if (encrypt)
-	//	xtea_encipher(16, (uint32_t*)data, key);
-	//else
-	//	xtea_decipher(16, (uint32_t*)data, key);
 	bool EncDec = true;
+    xtea_encipher(16, key);
 
+    cout << "\nEncrypted data: ";
+    printf("%08x ", enc0);
+    printf("\t%08x ", enc1);
 
-		xtea_encipher(16, key);
-
-
-		cout << "\nEncrypted data: ";
-		printf("%08x ", enc0);
-		printf("\t%08x ", enc1);
-		//FileCrypt("file.txt", false); // decrypt
-
-		cout << "\n\nDecrypted data: ";
-		xtea_decipher(16, enc0, enc1, key);
-		printf("%08x ", dec0);
-		printf("\t%08x ", dec1);
-		cout << "Done";
+    cout << "\n\nDecrypted data: ";
+    xtea_decipher(16, enc0, enc1, key);
+    printf("%08x ", dec0);
+    printf("\t%08x ", dec1);
+    cout << "\nDone";
 	return 0;
 }
